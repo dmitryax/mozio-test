@@ -15,6 +15,7 @@
         <div class="form-group">
             <label for="companySelect">Chose a company</label>
             <select class="form-control" id="companySelect">
+                <option value="0">...</option>
                 {% for company in companies %}
                     <option value="{{ company.id }}">{{ company.name }}</option>
                 {% endfor %}

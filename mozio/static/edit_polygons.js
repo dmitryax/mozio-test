@@ -40,15 +40,17 @@ $(window).load(function () {
 
         clearSelection = function () {
             if (selectedPolygon) {
+                $('#polygon'+ selectedPolygon.__gm_id).removeClass('active');
                 selectedPolygon.setEditable(false);
                 selectedPolygon = null;
             }
         }
 
-        selectShape = function (shape) {
+        selectPolygon = function (polygon) {
             clearSelection();
-            selectedPolygon = shape;
-            shape.setEditable(true);
+            selectedPolygon = polygon;
+            polygon.setEditable(true);
+            $('#polygon'+ selectedPolygon.__gm_id).addClass('active');
         },
 
         deleteSelectedPolygon = function () {
@@ -90,12 +92,12 @@ $(window).load(function () {
                 list = '<ul>' + coords.join('') + '</ul>',
                 para = $('<p class="polygon-coords" id="polygon'+ polygon.__gm_id +'"></p>');
 
-            para.append('<b>Polygon</b>').append(list);
+            para.append('<b>Polygon#' + polygon.__gm_id + '</b>').append(list);
             $("#polygonsList").append(para),
 
             polygons[polygon.__gm_id] = polygon;
             google.maps.event.addListener(polygon, 'click', function() {
-                selectShape(polygon);
+                selectPolygon(polygon);
             });
 
         },
@@ -132,28 +134,34 @@ $(window).load(function () {
             var company_id = $(this).val();
             clearPolygons();
 
-            $.ajax({
-                dataType: "json",
-                url: getPolygonsUrl,
-                data: {'company_id' : company_id},
-                success: function (data) {
-                    if (!data.error) {
-                        createPolygons(data.data.polygons_data);
+            if (company_id) {
+                $.ajax({
+                    dataType: "json",
+                    url: getPolygonsUrl,
+                    data: {'company_id' : company_id},
+                    success: function (data) {
+                        if (!data.error) {
+                            createPolygons(data.data.polygons_data);
+                        }
                     }
-                }
-            });
+                });
+            }
         };
 
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(e) {
             var newPolygon = e.overlay;
-            registerPolygon(newPolygon);
-            selectShape(newPolygon);
+            if (newPolygon.getPath().getArray().length > 2) {
+                registerPolygon(newPolygon);
+                selectPolygon(newPolygon);
+            } else {
+                newPolygon.setMap(null);
+            }
         });
 
         $('#deleteShapeButton').click(deleteSelectedPolygon);
         $('#saveButton').click(savePolygons);
-        $('#companySelect').change(changeCompany).trigger('change');
+        $('#companySelect').change(changeCompany);
 
 });
