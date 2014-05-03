@@ -3,7 +3,7 @@ from operator import attrgetter
 from .models import Vertex, Point
 
 
-# Size(lng/lat) of cell for storing service aria data in cache table
+# Size(lng/lat) of cell for storing service aria data in the geo cache table
 # Changing this will corrupt all the data in Point model
 CELL_SIZE = 0.2
 

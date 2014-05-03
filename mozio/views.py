@@ -1,3 +1,5 @@
+from thread import start_new_thread
+
 from handy.ajax import ajax
 
 from django.shortcuts import render
@@ -80,6 +82,8 @@ def save_polygon(company, polygon_array):
         Vertex(polygon=polygon, seq_number=i,
                lat=float(vertex_data[0]), lng=float(vertex_data[1])).save()
 
-    save_polygon_in_table(company, polygon)
+    # Creating a new thread to pupolate geo cache table for better responsiveness
+    # It may cause situation when just edited data is not accessible at search page yet
+    start_new_thread(save_polygon_in_table, (company, polygon))
 
 
