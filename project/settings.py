@@ -1,16 +1,41 @@
-"""
-Django settings for project Mozio.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
-
 # Build paths inside the Mozio like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+
+# If the host name ends with '.local', set LOCAL = True
+if socket.gethostname().endswith(".local"):
+    LOCAL = True
+else:
+    LOCAL = False
+
+# Define general behavior variables for live host and non live host
+if LOCAL:
+    DEBUG = True
+else:
+    DEBUG = False
+
+TEMPLATE_DEBUG = DEBUG
+
+if LOCAL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+   DATABASES = {
+    'default': {
+        'NAME': 'mozio',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'mozio',
+        'PASSWORD': 'mozio'
+    }
+  }
 
 
 # Quick-start development settings - unsuitable for production
@@ -18,11 +43,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+nxms03w!5j6v#fn!9b*+7p96boy*4^rfd%p*b9ftwuk1r=71t'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -52,19 +72,6 @@ ROOT_URLCONF = 'project.urls'
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
