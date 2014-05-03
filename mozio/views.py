@@ -6,6 +6,11 @@ from django.utils import simplejson as json
 from .models import Company, Polygon, Vertex
 from .utils import save_polygon_in_table, get_companies
 
+
+def index(request):
+    return render(request, 'layout.html')
+
+
 def search_map(request):
     return render(request, 'search_map.html')
 

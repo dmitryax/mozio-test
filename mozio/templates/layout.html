@@ -37,6 +37,17 @@
 
 <body>
     <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Mozio</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li ><a href="{% url 'edit' %}">Edit page</a></li>
+                <li ><a href="{% url 'show' %}">Search page</a></li>
+            </ul>
+        </nav>
+
         {% block content %}
         {% endblock %}
     </div>

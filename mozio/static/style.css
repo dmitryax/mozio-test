@@ -1,6 +1,5 @@
-.content {
-    margin: 20 auto;
-    width: 950;
+.container {
+    margin-top: 20px;
 }
 
 .map-canvas {
