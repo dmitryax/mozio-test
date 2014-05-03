@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" type="text/css" />
+
+    <script type="text/javascript" src="{% static 'jquery-2.1.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.cookie.js' %}"></script>
+    <script type="text/javascript" src="{% static 'underscore-min.js' %}"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA_Mw2ym-T5rZQB2N7tyhfqBpZIKvZqhTI&sensor=false&libraries=drawing"></script>
+
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.content {
+    margin: 20 auto;
+    width: 950;
+}
+
+.map-canvas {
+    width: 100%;
+    height: 600px
+}
