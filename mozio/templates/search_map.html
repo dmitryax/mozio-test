@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% load static %}
+    <script type="text/javascript">
+        var getSuppliersUrl = "{% url 'find_suppliers' %}";
+    </script>
+    <script type="text/javascript" src="{% static 'find_suppliers.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <h3>Find suppliers</h2>
+    <div id="map_canvas" class="map-canvas"></div>
+{% endblock %}

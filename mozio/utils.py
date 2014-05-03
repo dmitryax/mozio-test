@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 from .models import Vertex, Point
 
 
@@ -6,13 +8,20 @@ from .models import Vertex, Point
 CELL_SIZE = 0.2
 
 
+def get_companies(lat, lng):
+    """Returns companies which serves area under given coords"""
+    print(convert_coord(lat), convert_coord(lng))
+    matches = Point.objects.filter(lat=convert_coord(lat), lng=convert_coord(lng))
+    return map(attrgetter('company'), matches)
+
+
 def save_polygon_in_table(company, polygon):
     vertices = Vertex.objects.filter(polygon=polygon)
     if not vertices:
         return
 
     # Manipulating points(lat/lng) in integers for better perffomance
-    vertices = [[int(v.lat / CELL_SIZE), int(v.lng / CELL_SIZE)] for v in vertices]
+    vertices = [[convert_coord(v.lat), convert_coord(v.lng)] for v in vertices]
 
     path_length = len(vertices)
     start_point = vertices[0]
@@ -43,3 +52,11 @@ def save_polygon_in_table(company, polygon):
         for lat in xrange(min_lat, max_lat):
             if point_inside_polygon(lat, lng):
                 Point.objects.get_or_create(lat=lat, lng=lng, company=company)
+
+
+def convert_coord(coord):
+    """
+    Converts coord (lat or lng) from float to int
+    correspondind the data stored in Point model
+    """
+    return int(coord / CELL_SIZE)

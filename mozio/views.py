@@ -4,7 +4,23 @@ from django.shortcuts import render
 from django.utils import simplejson as json
 
 from .models import Company, Polygon, Vertex
-from .utils import save_polygon_in_table
+from .utils import save_polygon_in_table, get_companies
+
+def search_map(request):
+    return render(request, 'search_map.html')
+
+
+@ajax
+def find_suppliers(request):
+    try:
+        lat = float(request.GET.get('lat'))
+        lng = float(request.GET.get('lng'))
+    except TypeError, ValueError:
+        raise ajax.error('wrong_agrument')
+
+    companies = get_companies(lat, lng)
+    return {'companies': map(str, companies)}
+
 
 def edit_polygons(request):
     companies = Company.objects.all()
