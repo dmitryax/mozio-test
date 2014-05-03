@@ -44,11 +44,7 @@ else:
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '+nxms03w!5j6v#fn!9b*+7p96boy*4^rfd%p*b9ftwuk1r=71t'
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

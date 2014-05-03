@@ -51,8 +51,8 @@ def save_polygon_in_table(company, polygon):
     for lng in xrange(min_lng, max_lng):
         for lat in xrange(min_lat, max_lat):
             if point_inside_polygon(lat, lng):
-                Point.objects.get_or_create(lat=lat, lng=lng, company=company)
-
+                if not Point.objects.filter(lat=lat, lng=lng, company=company).exists():
+                    Point(lat=lat, lng=lng, company=company).save()
 
 def convert_coord(coord):
     """
