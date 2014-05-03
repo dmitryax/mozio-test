@@ -13,12 +13,7 @@ $.ajaxSetup({
 
 
 $(window).load(function () {
-    var mapOptions = {
-            center: new google.maps.LatLng(24.886436490787712, -70.2685546875),
-            zoom: 5,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        },
-        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions),
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions),
 
         polygons = {},
         selectedPolygon,
@@ -125,7 +120,14 @@ $(window).load(function () {
                 data: {'polygons_data': JSON.stringify(polygons_data),
                        'company_id' : company_id},
                 success: function (data) {
-
+                    if (data.success) {
+                        $.growl('Data successfully saved!', { type: 'success' });
+                    } else {
+                        $.growl('Error: ' + data.error, { type: 'danger' });
+                    }
+                },
+                error: function (e, txt, msg) {
+                    $.growl('Error: ' + msg, { type: 'danger' });
                 }
             });
         },
@@ -140,9 +142,14 @@ $(window).load(function () {
                     url: getPolygonsUrl,
                     data: {'company_id' : company_id},
                     success: function (data) {
-                        if (!data.error) {
+                        if (data.success) {
                             createPolygons(data.data.polygons_data);
+                        } else {
+                            $.growl('Error: ' + data.error, { type: 'danger' });
                         }
+                    },
+                    error: function (e, txt, msg) {
+                        $.growl('Error: ' + msg, { type: 'danger' });
                     }
                 });
             }

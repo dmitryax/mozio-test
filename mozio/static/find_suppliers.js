@@ -1,11 +1,6 @@
 $(window).load(function () {
 
-    var mapOptions = {
-            center: new google.maps.LatLng(24.886436490787712, -70.2685546875),
-            zoom: 5,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        },
-        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions),
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions),
 
         infowindow = new google.maps.InfoWindow({ map: map, title: "Uluru (Ayers Rock)" }),
 
@@ -30,10 +25,14 @@ $(window).load(function () {
                 url: getSuppliersUrl,
                 data: query_data,
                 success: function (data) {
-                    if (!data.error) {
+                    if (data.success) {
                         updateInfowindow(e.latLng, data.data.companies)
+                    } else {
+                        $.growl('Error: ' + data.error, { type: 'danger' });
                     }
-
+                },
+                error: function (e, txt, msg) {
+                    $.growl('Error: ' + msg, { type: 'danger' });
                 }
             });
         };

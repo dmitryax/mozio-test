@@ -10,8 +10,26 @@
     <script type="text/javascript" src="{% static 'jquery-2.1.0.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'jquery.cookie.js' %}"></script>
     <script type="text/javascript" src="{% static 'underscore-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-growl.min.js' %}"></script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA_Mw2ym-T5rZQB2N7tyhfqBpZIKvZqhTI&sensor=false&libraries=drawing"></script>
+
+    <script type="text/javascript">
+        // google maps setup
+        var mapOptions = {
+            center: new google.maps.LatLng(24.886436490787712, -70.2685546875),
+            zoom: 5,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        // bootstrap growl notifications setup
+        $.growl.default_options['position'] = {
+            from: "top",
+            align: "center"
+        };
+        $.growl.default_options['delay'] = 3000
+    </script>
 
     {% block head %}
     {% endblock %}
