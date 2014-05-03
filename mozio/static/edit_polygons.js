@@ -55,6 +55,7 @@ $(window).load(function () {
             if (selectedPolygon) {
                 selectedPolygon.setMap(null);
                 delete polygons[selectedPolygon.__gm_id]
+                $('#polygon'+ selectedPolygon.__gm_id).remove();
             }
         },
 
@@ -71,20 +72,38 @@ $(window).load(function () {
                 polygon.setMap(null);
             });
             polygons = {};
+
+            $('.polygon-coords').remove();
+        },
+
+        showVertex = function (vertex) {
+            var decimalPlaces = 5;
+            return vertex.lat().toFixed(decimalPlaces) + ", " + vertex.lng().toFixed(decimalPlaces);
         },
 
         registerPolygon = function (polygon) {
+            var vertices = polygon.getPath().getArray(),
+
+                coords = _.map(vertices, function (vertex) {
+                    return '<li>' + showVertex(vertex) + '</li>';
+                }),
+                list = '<ul>' + coords.join('') + '</ul>',
+                para = $('<p class="polygon-coords" id="polygon'+ polygon.__gm_id +'"></p>');
+
+            para.append('<b>Polygon</b>').append(list);
+            $("#polygonsList").append(para),
+
             polygons[polygon.__gm_id] = polygon;
             google.maps.event.addListener(polygon, 'click', function() {
                 selectShape(polygon);
             });
+
         },
 
         createPolygons = function (polygons_data) {
             _.each(polygons_data, function (polygon_data) {
                 var vertices = _.map(polygon_data, function (vertex) {
-                        var r = new google.maps.LatLng(vertex[0], vertex[1]);
-                        return r;
+                        return new google.maps.LatLng(vertex[0], vertex[1]);
                     }),
                     polygon = new google.maps.Polygon({paths: vertices});
 
@@ -104,7 +123,7 @@ $(window).load(function () {
                 data: {'polygons_data': JSON.stringify(polygons_data),
                        'company_id' : company_id},
                 success: function (data) {
-                   console.log(data);
+
                 }
             });
         },
@@ -112,7 +131,6 @@ $(window).load(function () {
         changeCompany = function () {
             var company_id = $(this).val();
             clearPolygons();
-            console.log(polygons)
 
             $.ajax({
                 dataType: "json",

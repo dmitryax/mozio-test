@@ -73,7 +73,7 @@ def save_polygon(company, polygon_array):
 
     for i, vertex_data in enumerate(polygon_array):
         Vertex(polygon=polygon, seq_number=i,
-               lat=int(vertex_data[0]), lng=int(vertex_data[1])).save()
+               lat=float(vertex_data[0]), lng=float(vertex_data[1])).save()
 
     save_polygon_in_table(company, polygon)
 
